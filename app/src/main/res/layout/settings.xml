@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false"
+        android:fillViewport="true">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/llSettingsMain"
+    android:padding="5dp">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/SettingsKeyStoreType"
+            android:id="@+id/tvSettingKeyStore"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:layout_gravity="top|center_horizontal"/>
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spKeyStore"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_gravity="top|center_horizontal"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/SettingsProviderType"
+            android:id="@+id/tvSettingProviderStore"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="5dp"/>
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spProviderType"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_gravity="top|center_horizontal"/>
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/ContainerMoveLabel"
+              android:id="@+id/textView"
+              android:textSize="14dp"
+              android:singleLine="false"
+              android:layout_column="0"
+              android:layout_gravity="top|center_horizontal"/>
+    <EditText android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/ContainerDefaultPath"
+              android:id="@+id/etContainerFolder"
+              android:singleLine="true"
+              android:layout_column="0"
+              android:layout_gravity="top|center_horizontal"/>
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/SettingsCopy"
+            android:id="@+id/btMoveContainers"
+            android:layout_gravity="top|center_horizontal"/>
+</LinearLayout>
+</ScrollView>

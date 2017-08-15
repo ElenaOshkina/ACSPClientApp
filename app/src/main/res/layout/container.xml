@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false"
+        android:fillViewport="true">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/llContainerMain"
+    android:padding="5dp">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ContainerContainerName"
+            android:id="@+id/tvContainer"
+            android:layout_gravity="top|center_horizontal"
+            />
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etContainerName"
+            android:layout_gravity="top|center_horizontal"
+            android:text="test_container"
+            android:singleLine="true"/>
+    <!--
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ContainerGenKeyPair"
+        android:id="@+id/btGenKeyPair"
+        android:layout_column="0"
+        android:layout_gravity="top|center_horizontal"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+    -->
+    <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/rgContainerCAVersion">
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ContainerCA14Button"
+                android:id="@+id/rbContainerCA14"
+                android:checked="true"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ContainerCA15Button"
+                android:id="@+id/rbContainerCA15"/>
+        <!-- JCP-387: пока нет внещнего тестового УЦ 2.0 - заблокировано!
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ContainerCA20Button"
+                android:id="@+id/rbContainerCA20"/>
+        -->
+    </RadioGroup>
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ContainerGenKeyPairDH"
+            android:id="@+id/btGenKeyPairDH"
+            android:layout_column="0"
+            android:layout_gravity="top|center_horizontal"
+            />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ContainerChangePassAndCopy"
+            android:id="@+id/btCopyContainer"
+            android:layout_column="0"
+            android:layout_gravity="top|center_horizontal"
+            />
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ContainerRemoveOneContainer"
+            android:id="@+id/btRemoveContainer"
+            android:layout_gravity="top|center_horizontal"
+            />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ContainerRemoveContainers"
+            android:id="@+id/btRemoveContainers"
+            android:layout_column="0"
+            android:layout_gravity="top|center_horizontal"/>
+</LinearLayout>
+</ScrollView>

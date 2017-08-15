@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CSP Примеры</string>
+
+    <string name="ContainerTab">Контейнеры</string>
+    <string name="ExamplesTab">Примеры</string>
+    <string name="SettingsTab">Настройки</string>
+    <string name="IntentsTab">Интенты</string>
+
+    <string name="ContainerGenKeyPair">Создание контейнера (ключ подписи)</string>
+    <string name="ContainerGenKeyPairDH">Генерация контейнера (ключ обмена)</string>
+    <string name="ContainerChangePassAndCopy">Создание контейнера и смена пина</string>
+    <string name="ContainerRemoveOneContainer">Удаление контейнера</string>
+    <string name="ContainerRemoveContainers">Удаление всех контейнеров</string>
+    <string name="ContainerContainerName">Контейнер:</string>
+    <string name="ContainerCA14Button">УЦ 1.4</string>
+    <string name="ContainerCA15Button">УЦ 1.5</string>
+    <string name="ContainerCA20Button">УЦ 2.0 (пароль по умолчанию: 123)</string>
+    <string name="ContainerContainerNameIsNull">Ошибка! Не задан алиас контейнера.</string>
+    <string name="ContainerContainerNameExists">Ошибка! Контейнер существует.</string>
+
+    <string name="ContainerMoveLabel">Копировать контейнеры из:</string>
+    <string name="ContainerDefaultPath">/mnt/sdcard/keys</string>
+
+    <string name="StatusField">Статус</string>
+    <string name="StatusUnknown">неизвестен</string>
+    <string name="StatusOK">выполнено</string>
+    <string name="StatusError">ошибка</string>
+    <string name="SettingsCopy">Копировать</string>
+
+    <string name="SettingsKeyStoreType">Тип контейнера:</string>
+    <string name="SettingsProviderType">Тип провайдера:</string>
+    <string name="SettingsKeyAlgorithm">Алгоритм ключа:</string>
+
+    <string name="ExamplesExampleName">Пример:</string>
+    <string name="ExamplesClientName">Контейнер клиента:</string>
+    <string name="ExamplesClientPassword">Пароль:</string>
+    <string name="ExamplesServerName">Контейнер получателя:</string>
+    <string name="ExamplesServerPassword">Пароль:</string>
+    <string name="ExamplesExecute">Выполнить</string>
+
+    <string name="ExamplesInstallCAdESCAWarning">
+        Вы выбрали CAdES примеры, которые требуют, чтобы были установлены сертификаты УЦ.
+        Специальный пример %s установит их. Вы также можете установить сертификаты с помощью
+        Настройки > Безопасность в вашем устройстве. Далее нажмите Выполнить для запуска примера.
+    </string>
+
+    <string name="ExamplesAuthInstallCACAdES">Автоматически устанавливать сертификаты УЦ</string>
+    <string name="ContainerAboutTestContainer" formatted="false">Контейнер: %s, пароль: %s</string>
+
+    <string-array name="ExamplesDescription">
+        <item>Проверка статуса сертификат (онлайн)</item>
+        <item>Содержимое сертификата</item>
+        <item>Хэширование данных</item>
+        <item>Подпись данных</item>
+        <item>Создание и проверка подписи</item>
+        <item>Создание и проверка CMS подписи</item>
+        <item>Создание и проверка CMS подписи с атрибутами</item>
+        <item>Создание и проверка XML подписи</item>
+        <item>Установка доверенных корневых сертификатов</item>
+        <item>Создание и проверка CAdES-BES</item>
+        <item>Создание и проверка CAdES-X Long Type 1</item>
+        <item>Шифрование на ключах согласования</item>
+        <item>Шифрование на сессионном ключе</item>
+        <item>Создание и проверка Enveloped CMS (KeyTransport)</item>
+        <item>Создание и проверка Enveloped CMS (KeyAgreement)</item>
+        <item>Установка TLS соединения</item>
+        <item>Установка TLS соединения с аут. клиента</item>
+        <item>Установка TLS соединения (apache http 4)</item>
+        <item>Установка TLS соединения с аут. клиента (apache http 4)</item>
+    </string-array>
+
+    <!-- Интенты -->
+
+    <string name="IntentsIntentCopyContainer">Копировать контейнер</string>
+    <string name="IntentsIntentCertSource">Брать сертификат из:</string>
+    <string name="IntentsIntentCertSourceChain">Использовать цепочку сертификатов</string>
+    <string name="IntentsIntentInstallCertInContainer">Установить сертификат</string>
+    <string name="IntentsIntentSignData">Подписать данные</string>
+    <string name="IntentsIntentVerifySignature">Проверить подпись</string>
+    <string name="IntentsIntentBuildChain">Построить цепочку</string>
+    <string name="IntentsIntentGenerate">Создать контейнер</string>
+
+    <string name="IntentsSignatureAlias">Алиас контейнера для создания подписи:</string>
+    <string name="IntentsSignatureData">Данные для подписи:</string>
+    <string name="IntentsSignatureDetached">Отделенная подпись</string>
+    <string name="IntentsSignatureCAdESLong">Создать CAdES-X Long Type 1</string>
+
+    <string name="IntentsStorageKind">Вид хранилища:</string>
+    <string name="IntentsObjectAlias">Построить цепочку для объекта:</string>
+    <string name="IntentsVerifyAsDefault">Проверять с типом по умолчанию</string>
+
+    <string-array name="IntentsIntentCertSourceList">
+        <item>пути к файлу, указанному в интенте</item>
+        <!--
+        <item>содержимого, переданного как параметр</item>
+        <item>пути к файлу, переданного как параметр</item>
+        -->
+    </string-array>
+
+    <string name="IntentsContainerType">Тип контейнера:</string>
+    <string name="IntentsContainerAlias">Алиас контейнера:</string>
+    <string name="IntentsKeyAlgorithm2001">ГОСТ Р 34.10&#8211;2001</string>
+    <string name="IntentsKeyAlgorithm2012256">ГОСТ Р 34.10&#8211;2012&#8211;256</string>
+    <string name="IntentsKeyAlgorithm2012512">ГОСТ Р 34.10&#8211;2012&#8211;512</string>
+    <string name="IntentsKeyExchange">Ключ обмена</string>
+    <string name="IntentsCertSelfSigned">Самоподписанный сертификат</string>
+    <string name="IntentsCAVersion">Версия Крипто-Про УЦ:</string>
+    <string name="IntentsCAAddress">Адрес Крипто-Про УЦ:</string>
+
+</resources>
