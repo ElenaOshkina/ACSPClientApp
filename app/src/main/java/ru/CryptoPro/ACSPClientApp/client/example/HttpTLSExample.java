@@ -12,26 +12,25 @@ package ru.CryptoPro.ACSPClientApp.client.example;
 
 import android.util.Log;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.SingleClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.security.KeyStore;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.ConnectionSpec;
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
 import ru.CryptoPro.ACSPClientApp.Constants;
 import ru.CryptoPro.ACSPClientApp.client.LogCallback;
 import ru.CryptoPro.ACSPClientApp.client.example.interfaces.ContainerAdapter;
@@ -39,6 +38,7 @@ import ru.CryptoPro.ACSPClientApp.client.example.interfaces.IThreadExecuted;
 import ru.CryptoPro.ACSPClientApp.util.KeyStoreType;
 import ru.CryptoPro.JCSP.JCSP;
 import ru.CryptoPro.ssl.Provider;
+import rx.Subscriber;
 
 /**
  * Класс HttpTLSExample реализует пример обмена
@@ -48,13 +48,13 @@ import ru.CryptoPro.ssl.Provider;
  *
  */
 public class HttpTLSExample extends TLSExample {
-
     /**
      * Конструктор.
      *
      * @param adapter Настройки примера.
      */
     protected HttpTLSExample(ContainerAdapter adapter) {
+
         super(adapter);
     }
 
@@ -69,6 +69,9 @@ public class HttpTLSExample extends TLSExample {
      *
      */
     private class HttpTLSThread implements IThreadExecuted {
+
+        retrofit2.Response<ResponseBody> retrofitResponse = null;
+        Subscriber<ResponseBody> subscription = null;
 
         @Override
         public void execute(LogCallback callback) {
@@ -122,61 +125,55 @@ public class HttpTLSExample extends TLSExample {
 
                 callback.log("Create socket factory.");
 
-                /*javax.net.ssl.SSLSocketFactory sslFactory = (javax.net.ssl.SSLSocketFactory) javax.net.ssl.SSLSocketFactory.getDefault();
-                SSLSocket socket = (SSLSocket) sslFactory.createSocket("cpca.cryptopro.ru", 443);
-                String pickedCipher[] = {Provider.ALGORITHM};
-                socket.setEnabledCipherSuites(pickedCipher);
-                String[] suites = socket.getEnabledCipherSuites();
+                SSLContext sslCtx = SSLContext.getInstance(Provider.ALGORITHM, Provider.PROVIDER_NAME);
 
-                OkHttpClient okHttpClient;
-                okHttpClient = new OkHttpClient();
-                okHttpClient.setFollowSslRedirects(true);
-                okHttpClient.setSslSocketFactory(sslFactory);
-                okHttpClient.setHostnameVerifier(new AllowAllHostnameVerifier());*/
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(Provider.KEYMANGER_ALG, Provider.PROVIDER_NAME);
+                tmf.init(ts);
 
-                SSLSocketFactory socketFactory = new SSLSocketFactory(
-                    Provider.ALGORITHM, ks, keyStorePasswordValue, ts, null, null);
+                sslCtx.init(null, tmf.getTrustManagers(), null);
 
-                socketFactory.setHostnameVerifier(
-                    SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                javax.net.ssl.SSLSocketFactory sslFactory = sslCtx.getSocketFactory();
 
-                callback.log("Register https scheme.");
+                X509TrustManager tm = (X509TrustManager) tmf.getTrustManagers()[0];
 
-                // Регистрируем HTTPS схему.
-                Scheme httpsScheme = new Scheme("https", socketFactory,
-                    containerAdapter.getConnectionInfo().getHostPort());
+                ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+                        .tlsVersions(Provider.ALGORITHM)
+                        .cipherSuites(Provider.KEYMANGER_ALG)
+                        .allEnabledTlsVersions()
+                        .supportsTlsExtensions(false)
+                        .allEnabledCipherSuites()
+                        .build();
 
-                SchemeRegistry schemeRegistry = new SchemeRegistry();
-                schemeRegistry.register(httpsScheme);
+                OkHttpClient.Builder builder;
+                builder = new OkHttpClient.Builder();
+                builder.sslSocketFactory(sslFactory, tm);
+                builder.hostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                builder.connectTimeout(MAX_CLIENT_TIMEOUT, TimeUnit.MILLISECONDS);
+                builder.readTimeout(MAX_CLIENT_TIMEOUT, TimeUnit.MILLISECONDS);
+                builder.connectionSpecs(Collections.singletonList(spec));
+                OkHttpClient okHttpClient = builder.build();
 
-                callback.log("Set connection options.");
+                Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                        .baseUrl("https://cpca.cryptopro.ru:443")
+                        .callFactory(okHttpClient);
 
-                // Параметры соединения.
-                HttpParams params = new BasicHttpParams();
-                HttpConnectionParams.setSoTimeout(params, MAX_CLIENT_TIMEOUT);
-                ClientConnectionManager cm = new SingleClientConnManager(params, schemeRegistry);
-                httpClient = new DefaultHttpClient(cm, params);
+                Retrofit retrofit = retrofitBuilder.build();
 
-                callback.log("Execute GET request.");
+                CryptoApi cryptoApi = retrofit.create(CryptoApi.class);
+                retrofitResponse = cryptoApi.getData().execute();
 
-                // GET-запрос.
-                HttpGet httpget = new HttpGet(url);
-                HttpResponse response = httpClient.execute(httpget);
-                HttpEntity entity = response.getEntity();
+                int status = retrofitResponse.raw().code();
 
-                callback.log("Response status: " + response.getStatusLine());
-
-                int status = response.getStatusLine().getStatusCode();
-                if (status  != 200) {
+                if (retrofitResponse.raw().code() != 200) {
                     callback.log("Bad http response status: " + status);
                     callback.setStatusFailed();
                     return;
                 } // if
 
-                if (entity != null) {
+                if (retrofitResponse.body().source() != null) {
 
                     // Получаем размер заголовка.
-                    InputStream is = entity.getContent();
+                    InputStream is = retrofitResponse.body().source().inputStream();
 
                     BufferedReader in = new BufferedReader(
                         new InputStreamReader(is, Constants.DEFAULT_ENCODING));
